@@ -1,6 +1,7 @@
 body{
     font-family: 'Roboto', sans-serif;
     background-color: lightgoldenrodyellow;
+
 }
 .nomeDoJogo{
     width: 600px;
@@ -12,7 +13,7 @@ body{
     font-weight: 700;
     font-size: 56px;
     line-height: 66px;
-    letter-spacing: -0.004em;
+    text-align: center;
     font-style: normal;
     
 }
@@ -82,3 +83,20 @@ img{
     transform: rotateY(180deg);
    
 }
+@media (max-width:600px){
+    .nomeDoJogo{
+        width: 100%;
+        height: 150px;
+        margin-left: auto;
+        margin-right: auto;
+        
+        text-align: center;
+    }
+    .containerCartas{
+        margin-top: 80px;
+        width: 40%;
+      
+    }
+    
+}
+

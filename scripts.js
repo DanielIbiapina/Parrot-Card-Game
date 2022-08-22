@@ -1,11 +1,15 @@
+//só consigo clicar na parte esquerda da carta
+
 promptInicial();
 
 
 let firstCard = '';
 let secondCard = '';
 
+
 function promptInicial(){
     const quantasCartas = prompt('Com quantas cartas deseja jogar?');
+   
     if(quantasCartas !== '4' && quantasCartas !== '6' && quantasCartas !== '8' && quantasCartas !== '10' 
     && quantasCartas !== '12' && quantasCartas !== '14' ){
         promptInicial();
@@ -33,7 +37,7 @@ function promptInicial(){
     cards.length = Number(quantasCartas);
     console.log(cards);
     const cardsEmbaralhadas = cards.sort(comparador);
-    //ideia para amanha: duplicar o ul.innerHTML
+    
     
     
 
@@ -79,11 +83,15 @@ function revealCard(elemento){
         secondCardFilho = elemento;
     }
     
+    
+
     if(firstCard.classList[1] == secondCard.classList[1]){
         
         firstCard = '';
         secondCard = '';
 
+        firstCardFilho.classList.add('check');
+        secondCard.classList.add('check');
     } else{
         setTimeout(intervalo,1000);
         function intervalo(){
