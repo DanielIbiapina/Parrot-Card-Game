@@ -1,6 +1,6 @@
 body{
     font-family: 'Roboto', sans-serif;
-    background-color: #e5e5e5;
+    background-color: lightgoldenrodyellow;
 }
 .nomeDoJogo{
     width: 600px;
@@ -14,13 +14,13 @@ body{
     line-height: 66px;
     letter-spacing: -0.004em;
     font-style: normal;
-    background-color: green;
+    
 }
 .containerCartas{
     margin-left: auto;
     margin-right: auto;
     margin-top: 47px;
-    background-color: aqua;
+   
     width: 830px;
 }
 .carta{
@@ -61,6 +61,7 @@ ul{
 .frente{
     
     transform: rotateY(180deg);
+    background-color: #A7E9AF;
 }
 .costas{
     background-image: url('../front.png');
@@ -68,13 +69,16 @@ ul{
     background-position: center;
     background-color: #A7E9AF;
     backface-visibility: hidden;
+    
 }
-.carta:hover {
-transform: rotateY(180deg);
-}
+
 img{
    width: 100%;
     background-size: cover;
     background-position: center;
     position: absolute;
+}
+.reveal-card{
+    transform: rotateY(180deg);
+   
 }
