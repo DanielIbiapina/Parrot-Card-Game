@@ -1,121 +1,107 @@
-//só consigo clicar na parte esquerda da carta
+// Variáveis de estado
+let firstCard = null;
+let secondCard = null;
+let matchedCards = 0;
+let totalCards = getNumberOfCards();
 
-promptInicial();
+// Inicia o jogo
+startGame();
 
+// Função para solicitar o número de cartas do jogador
+function getNumberOfCards() {
+  let numberOfCards;
+  do {
+    numberOfCards = prompt(
+      "Com quantas cartas deseja jogar? Escolha entre 4, 6, 8, 10, 12 ou 14."
+    );
+  } while (![4, 6, 8, 10, 12, 14].includes(Number(numberOfCards)));
+  return Number(numberOfCards);
+}
 
-let firstCard = '';
-let secondCard = '';
+// Função para iniciar o jogo, renderizando as cartas
+function startGame() {
+  const cardImages = [
+    "bobrossparrot",
+    "explodyparrot",
+    "fiestaparrot",
+    "metalparrot",
+    "revertitparrot",
+    "tripletsparrot",
+    "unicornparrot",
+  ];
 
+  // Duplicar e embaralhar as cartas de acordo com o número escolhido
+  const gameCards = shuffleArray([
+    ...cardImages.slice(0, totalCards / 2),
+    ...cardImages.slice(0, totalCards / 2),
+  ]);
 
-function promptInicial(){
-    const quantasCartas = prompt('Com quantas cartas deseja jogar?');
-   
-    if(quantasCartas !== '4' && quantasCartas !== '6' && quantasCartas !== '8' && quantasCartas !== '10' 
-    && quantasCartas !== '12' && quantasCartas !== '14' ){
-        promptInicial();
-        quantasCartas = 0;
-    }
-    const ul = document.querySelector("ul");
-    const cards = [
-        'bobrossparrot',
-        'bobrossparrot',
-        'explodyparrot',
-        'explodyparrot',
-        'fiestaparrot',
-        'fiestaparrot',
-        'metalparrot',
-        'metalparrot',
-        'revertitparrot',
-        'revertitparrot',
-        'tripletsparrot',
-        'tripletsparrot',
-        'unicornparrot',
-        'unicornparrot'
-        
-    ]
-    
-    cards.length = Number(quantasCartas);
-    console.log(cards);
-    const cardsEmbaralhadas = cards.sort(comparador);
-    
-    
-    
+  renderCards(gameCards);
+}
 
-    for (let indice = 0; indice < Number(quantasCartas); indice++) {
-       
-        ul.innerHTML += `<li>
-        <div class="carta ${cardsEmbaralhadas[indice]}" >
-        <div class = "face frente"> <img src ="${cardsEmbaralhadas[indice]}.gif"/></div>
-        <div class = "face costas" onclick="revealCard(this)" setAt></div>
+// Função para embaralhar as cartas
+function shuffleArray(array) {
+  return array.sort(() => Math.random() - 0.5);
+}
+
+// Função para renderizar as cartas no HTML
+function renderCards(cards) {
+  const ul = document.querySelector("ul");
+  ul.innerHTML = ""; // Limpa o conteúdo anterior
+  cards.forEach((card) => {
+    ul.innerHTML += `
+      <li>
+        <div class="carta" data-card="${card}" onclick="handleCardClick(this)">
+          <div class="face frente"><img src="./images/${card}.gif" alt="${card}"></div>
+          <div class="face costas"></div>
         </div>
-        </li>`;
+      </li>`;
+  });
+}
 
-        
-      }
-       
-     
-      
-     
-     
-      
-
-        
-    
-      function comparador() { 
-          return Math.random() - 0.5; 
-      }
-      
-} 
-
-function revealCard(elemento){
-   
-   if(elemento.className.includes('reveal-card')){
+// Função que lida com o clique na carta
+function handleCardClick(cardElement) {
+  if (cardElement.classList.contains("reveal-card") || secondCard) {
     return;
-   }
-    if(firstCard == ''){
-        
-        elemento.classList.add('reveal-card');
-        firstCard = elemento.parentNode;
-        firstCardFilho = elemento;
-    } else if(secondCard == ''){
-        elemento.classList.add('reveal-card');
-        secondCard = elemento.parentNode;
-        secondCardFilho = elemento;
-    }
-    
-    
-
-    if(firstCard.classList[1] == secondCard.classList[1]){
-        
-        firstCard = '';
-        secondCard = '';
-
-        firstCardFilho.classList.add('check');
-        secondCard.classList.add('check');
-    } else{
-        setTimeout(intervalo,1000);
-        function intervalo(){
-            firstCardFilho.classList.remove('reveal-card');
-            secondCardFilho.classList.remove('reveal-card');
-            
-            firstCard = '';
-            secondCard = '';
-       }
-           
-            
-        
-    }
-    console.log(firstCard.classList[1]);
-    console.log(secondCard.classList[1]);
-    
   }
 
+  cardElement.classList.add("reveal-card");
 
+  if (!firstCard) {
+    firstCard = cardElement;
+  } else {
+    secondCard = cardElement;
+    checkForMatch();
+  }
+}
 
+// Função que verifica se as cartas viradas são iguais
+function checkForMatch() {
+  const firstCardImage = firstCard.getAttribute("data-card");
+  const secondCardImage = secondCard.getAttribute("data-card");
 
+  if (firstCardImage === secondCardImage) {
+    resetCards(true);
+    matchedCards += 2;
+    checkForWin();
+  } else {
+    setTimeout(() => resetCards(false), 1000);
+  }
+}
 
+// Função que reseta as cartas
+function resetCards(isMatch) {
+  if (!isMatch) {
+    firstCard.classList.remove("reveal-card");
+    secondCard.classList.remove("reveal-card");
+  }
+  firstCard = null;
+  secondCard = null;
+}
 
-
-  
-
-
+// Função para verificar se o jogador venceu o jogo
+function checkForWin() {
+  if (matchedCards === totalCards) {
+    setTimeout(() => alert("Parabéns! Você completou o jogo!"), 500);
+  }
+}
